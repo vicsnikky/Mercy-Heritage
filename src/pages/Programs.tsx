@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { BookOpen, GraduationCap, PenTool, Code, Baby } from "lucide-react";
+import { BookOpen, GraduationCap, PenTool, Baby } from "lucide-react";
 
 export function Programs() {
   return (
@@ -28,7 +28,7 @@ export function Programs() {
             <div className="flex flex-col lg:flex-row gap-12 items-center">
               <div className="lg:w-1/2">
                 <img 
-                  src="https://images.unsplash.com/photo-1510154221190-2ffb916ec6dd?q=80&w=2070&auto=format&fit=crop" 
+                  src="https://i.ibb.co/Y43gRXFW/file-00000000d57871f48c354d93463fe7c3.png" 
                   alt="Young kids learning" 
                   className="rounded-2xl shadow-xl w-full"
                 />
@@ -96,41 +96,6 @@ export function Programs() {
               </div>
             </div>
 
-            {/* Coding For All */}
-            <div className="flex flex-col lg:flex-row gap-12 items-center">
-              <div className="lg:w-1/2">
-                <img 
-                  src="https://images.unsplash.com/photo-1584697964328-b5e7f434cb2f?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Coding on laptop" 
-                  className="rounded-2xl shadow-xl w-full"
-                />
-              </div>
-              <div className="lg:w-1/2 space-y-6">
-                <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mb-2">
-                  <Code className="w-8 h-8" />
-                </div>
-                <h2 className="text-3xl font-bold text-navy">Coding For All Classes</h2>
-                <div className="w-16 h-1 bg-accent-red" />
-                <p className="text-lg text-gray-600">
-                  In today's digital age, digital literacy is non-negotiable. To ensure our students are well equipped, we incorporate specialized coding and computer programming classes into the curriculum for all grade levels.
-                </p>
-                <ul className="space-y-3">
-                  {[
-                    "Basic Tech Literacy for early years",
-                    "Scratch & Visual Programming for Primary",
-                    "Python & Web Development for Secondary",
-                    "Critical Problem Solving & Algorithmic Thinking"
-                  ].map((item, idx) => (
-                    <li key={idx} className="flex items-center gap-3">
-                      <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 shrink-0">
-                        <BookOpen className="w-4 h-4" />
-                      </div>
-                      <span className="text-gray-700">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
 
             {/* External Exams */}
             <div className="flex flex-col lg:flex-row-reverse gap-12 items-center">

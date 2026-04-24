@@ -81,6 +81,51 @@ export function About() {
         </div>
       </section>
 
+      {/* Founder Section */}
+      <section className="py-20 bg-off-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row-reverse gap-16 items-center">
+            <div className="lg:w-1/2 relative">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="relative z-10"
+              >
+                <img 
+                  src="https://i.ibb.co/JjbsPDjV/file-00000000c9e471f4aa67597cd355f272.png" 
+                  alt="Akinsola Micheal - Founder" 
+                  className="rounded-2xl shadow-2xl w-full object-cover aspect-[4/5] border-8 border-white"
+                />
+                <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-accent-red rounded-2xl -z-10 animate-pulse" />
+                <div className="absolute -top-6 -right-6 w-32 h-32 bg-navy rounded-2xl -z-10" />
+              </motion.div>
+            </div>
+            <div className="lg:w-1/2 space-y-6">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <span className="text-accent-red font-bold tracking-wider uppercase text-sm">Meet Our Visionary</span>
+                <h2 className="text-4xl font-bold text-navy mt-2 mb-4">Akinsola Micheal</h2>
+                <h3 className="text-xl text-gray-500 font-medium mb-6">Founder & President</h3>
+                <div className="w-20 h-1.5 bg-accent-red mb-8" />
+                
+                <div className="space-y-6 text-lg text-gray-600 italic leading-relaxed">
+                  <p>
+                    "Education is the bedrock of societal transformation. At Mercy Heritage, we didn't just set out to build a school; we envisioned a sanctuary where every child's potential is recognized as a divine heritage to be nurtured with precision and love."
+                  </p>
+                  <p className="not-italic">
+                    Under the visionary leadership of Mr. Akinsola Micheal, the school has grown from a humble dream into a beacon of academic excellence and moral uprightness in Abeokuta. His unwavering commitment to quality and affordable education continues to drive our mission to produce leaders of tomorrow today.
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Core Values */}
       <section className="py-20 bg-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

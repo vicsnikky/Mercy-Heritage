@@ -89,6 +89,95 @@ export function Home() {
         </div>
       </section>
 
+      {/* New Image Section */}
+      <section className="py-20 bg-navy relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+           <div className="flex flex-col lg:flex-row-reverse items-center gap-12">
+            <div className="lg:w-1/2">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <img 
+                  src="https://i.ibb.co/kpC97JK/file-0000000081a071f481bb137e78e0a75a.png" 
+                  alt="Mercy Heritage Excellence" 
+                  className="rounded-2xl shadow-2xl w-full border-4 border-white/10"
+                />
+              </motion.div>
+            </div>
+            <div className="lg:w-1/2 text-white">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">Shaping Extraordinary Minds for a Brighter Future</h2>
+                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                  At Mercy Heritage, we believe that education is the most powerful tool to change the world. Our dedicated approach focuses on identifying and nurturing the unique potential within every child, fostering a culture of innovation, critical thinking, and moral integrity.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                   <div className="bg-white/5 p-4 rounded-xl border border-white/10 flex-1 min-w-[200px]">
+                      <h4 className="font-bold text-accent-red mb-1">Our Vision</h4>
+                      <p className="text-sm text-gray-400">To be a leading educational institution that produces global citizens equipped with expertise and character.</p>
+                   </div>
+                   <div className="bg-white/5 p-4 rounded-xl border border-white/10 flex-1 min-w-[200px]">
+                      <h4 className="font-bold text-accent-red mb-1">Our Mission</h4>
+                      <p className="text-sm text-gray-400">To provide high-quality, inclusive, and equitable education that fosters total transformation.</p>
+                   </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Founder Message Section */}
+      <section className="py-20 bg-off-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            <div className="lg:w-1/3">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="relative"
+              >
+                <img 
+                  src="https://i.ibb.co/JjbsPDjV/file-00000000c9e471f4aa67597cd355f272.png" 
+                  alt="Akinsola Micheal" 
+                  className="rounded-2xl shadow-xl w-full border-4 border-white"
+                />
+                <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-accent-red rounded-xl -z-10" />
+              </motion.div>
+            </div>
+            <div className="lg:w-2/3">
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="space-y-6"
+              >
+                <h2 className="text-3xl md:text-4xl font-bold text-navy">Message from the Founder</h2>
+                <div className="w-20 h-1 bg-accent-red mb-6" />
+                <p className="text-xl text-gray-600 italic font-medium leading-relaxed">
+                  "Our goal is to create an environment where learning is coupled with character development. Every child at Mercy Heritage is seen as a unique heritage with a bright future ahead."
+                </p>
+                <div>
+                  <h4 className="text-2xl font-bold text-navy">Akinsola Micheal</h4>
+                  <p className="text-gray-500 font-medium uppercase tracking-wider text-sm mt-1">Founder & President, Mercy Heritage School</p>
+                </div>
+                <Link to="/about" className="inline-flex items-center gap-2 text-accent-red font-bold hover:gap-3 transition-all">
+                  Read His Bio <ArrowRight className="w-5 h-5" />
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Quick Info */}
       <section className="py-20 bg-white">
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -110,7 +199,6 @@ export function Home() {
                 {[
                   "Creche, Nursery & Primary Education",
                   "High/Secondary School Programs",
-                  "Coding for all classes",
                   "Tutorials for External Examinations (WAEC, NECO, JAMB)"
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3">
