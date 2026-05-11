@@ -21,14 +21,14 @@ export function Footer() {
               To be a distinguished centre of learning, dedicated to providing high-quality education, promoting equity, and nurturing pupils who exemplify excellence.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent-red hover:text-white transition-all text-white">
+              <a href="https://www.facebook.com/share/1AoSHEcByH/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent-red hover:text-white transition-all text-white" id="facebook-link">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent-red hover:text-white transition-all text-white">
+              <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent-red hover:text-white transition-all text-white" id="instagram-link">
                 <Instagram className="w-5 h-5" />
               </a>
               {/* Note: TikTok icon isn't native in lucide, using generic social structure */}
-              <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent-red hover:text-white transition-all text-white font-bold italic">
+              <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent-red hover:text-white transition-all text-white font-bold italic" id="tiktok-link">
                 t
               </a>
             </div>
