@@ -70,7 +70,6 @@ export function Footer() {
         
         <div className="border-t border-white/10 mt-12 pt-8 text-center text-sm text-gray-500">
           <p>&copy; {new Date().getFullYear()} Mercy Heritage Nursery and Primary School. All rights reserved.</p>
-          <p className="mt-2"><a href="#/admin" className="hover:text-white transition-colors">Admin Login</a></p>
         </div>
       </div>
     </footer>
