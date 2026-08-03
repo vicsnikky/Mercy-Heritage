@@ -166,16 +166,26 @@ export const useAppStore = create<AppState>()(
       },
       
       deletePost: async (id, imageUrl) => {
-        const { error } = await supabase.from('posts').delete().eq('id', id);
-        if (error) throw error;
-        
+        try {
+          const { error } = await supabase.from('posts').delete().eq('id', id);
+          if (error) {
+            console.error('Supabase delete post error:', error);
+          }
+        } catch (err) {
+          console.error('Supabase delete post exception:', err);
+        }
+
         if (imageUrl) {
           await deleteImage(imageUrl);
         }
-        
+
+        set(state => ({
+          posts: state.posts.filter(p => p.id !== id)
+        }));
+
         await get().fetchPosts();
       },
-      
+
       addGalleryItem: async (itemData) => {
         const uploadedUrl = itemData.imageUrl ? await uploadImage(itemData.imageUrl) : undefined;
         
@@ -188,15 +198,25 @@ export const useAppStore = create<AppState>()(
         if (error) throw error;
         await get().fetchGallery();
       },
-      
+
       deleteGalleryItem: async (id, imageUrl) => {
-        const { error } = await supabase.from('gallery').delete().eq('id', id);
-        if (error) throw error;
+        try {
+          const { error } = await supabase.from('gallery').delete().eq('id', id);
+          if (error) {
+            console.error('Supabase delete gallery error:', error);
+          }
+        } catch (err) {
+          console.error('Supabase delete gallery exception:', err);
+        }
 
         if (imageUrl) {
           await deleteImage(imageUrl);
         }
-        
+
+        set(state => ({
+          gallery: state.gallery.filter(g => g.id !== id)
+        }));
+
         await get().fetchGallery();
       }
     }),

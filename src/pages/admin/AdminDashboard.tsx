@@ -71,7 +71,25 @@ export function AdminDashboard() {
     }
   };
 
-  // Gallery Form State
+  const handleDeletePost = async (id: string, imageUrl?: string) => {
+    if (!window.confirm("Are you sure you want to delete this update?")) return;
+    try {
+      await deletePost(id, imageUrl);
+      showNotif('success', 'Update deleted successfully');
+    } catch (err) {
+      showNotif('error', 'Failed to delete update');
+    }
+  };
+
+  const handleDeleteGallery = async (id: string, imageUrl?: string) => {
+    if (!window.confirm("Are you sure you want to delete this item from gallery?")) return;
+    try {
+      await deleteGalleryItem(id, imageUrl);
+      showNotif('success', 'Gallery item deleted successfully');
+    } catch (err) {
+      showNotif('error', 'Failed to delete gallery item');
+    }
+  };
   const [galCap, setGalCap] = useState("");
   const [galImg, setGalImg] = useState("");
   const [galVid, setGalVid] = useState("");
@@ -198,7 +216,7 @@ export function AdminDashboard() {
                     <h3 className="font-bold text-navy truncate">{post.title}</h3>
                     <p className="text-sm text-gray-500 line-clamp-2 mt-1">{post.description}</p>
                   </div>
-                  <button onClick={() => deletePost(post.id, post.imageUrl)} className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shrink-0" title="Delete Post">
+                  <button onClick={() => handleDeletePost(post.id, post.imageUrl)} className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shrink-0" title="Delete Post">
                     <Trash2 className="w-5 h-5"/>
                   </button>
                 </div>
@@ -248,7 +266,7 @@ export function AdminDashboard() {
                       )}
                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3 text-white">
                         <div className="flex justify-end">
-                           <button onClick={() => deleteGalleryItem(item.id, item.imageUrl)} className="p-1.5 bg-red-500 rounded-md hover:bg-red-600 transition-colors">
+                           <button onClick={() => handleDeleteGallery(item.id, item.imageUrl)} className="p-1.5 bg-red-500 rounded-md hover:bg-red-600 transition-colors" title="Delete Gallery Item">
                              <Trash2 className="w-4 h-4"/>
                            </button>
                         </div>

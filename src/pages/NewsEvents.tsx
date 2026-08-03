@@ -1,17 +1,25 @@
 import { useState, useEffect } from "react";
 import { useAppStore } from "../store/useStore";
 import { format } from "date-fns";
-import { Calendar, Newspaper, ExternalLink } from "lucide-react";
+import { Calendar, Newspaper, ExternalLink, Trash2 } from "lucide-react";
 import { cn } from "../lib/utils";
 
 export function NewsEvents() {
   const posts = useAppStore(state => state.posts);
   const fetchPosts = useAppStore(state => state.fetchPosts);
+  const deletePost = useAppStore(state => state.deletePost);
+  const isAuthenticated = useAppStore(state => state.isAuthenticated);
   const [filter, setFilter] = useState<'all' | 'news' | 'event'>('all');
 
   useEffect(() => {
     fetchPosts();
   }, [fetchPosts]);
+
+  const handleDelete = async (id: string, imageUrl?: string) => {
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      await deletePost(id, imageUrl);
+    }
+  };
 
   const filteredPosts = posts.filter(post => filter === 'all' || post.category === filter);
 
@@ -67,7 +75,7 @@ export function NewsEvents() {
                       referrerPolicy="no-referrer"
                     />
                   )}
-                  <div className="absolute top-4 left-4">
+                  <div className="absolute top-4 left-4 flex items-center justify-between right-4">
                     <span className={cn(
                       "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm",
                       post.category === 'news' ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"
@@ -75,6 +83,15 @@ export function NewsEvents() {
                       {post.category === 'news' ? <Newspaper className="w-3 h-3" /> : <Calendar className="w-3 h-3" />}
                       {post.category}
                     </span>
+                    {isAuthenticated && (
+                      <button 
+                        onClick={(e) => { e.preventDefault(); handleDelete(post.id, post.imageUrl); }}
+                        className="p-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors"
+                        title="Delete post (Admin)"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
                 </div>
 

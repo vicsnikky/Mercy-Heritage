@@ -1,15 +1,23 @@
 import { useEffect } from "react";
 import { useAppStore } from "../store/useStore";
 import { format } from "date-fns";
-import { PlayCircle } from "lucide-react";
+import { PlayCircle, Trash2 } from "lucide-react";
 
 export function Gallery() {
   const gallery = useAppStore(state => state.gallery);
   const fetchGallery = useAppStore(state => state.fetchGallery);
+  const deleteGalleryItem = useAppStore(state => state.deleteGalleryItem);
+  const isAuthenticated = useAppStore(state => state.isAuthenticated);
 
   useEffect(() => {
     fetchGallery();
   }, [fetchGallery]);
+
+  const handleDelete = async (id: string, imageUrl?: string) => {
+    if (window.confirm("Are you sure you want to delete this gallery item?")) {
+      await deleteGalleryItem(id, imageUrl);
+    }
+  };
 
   return (
     <div className="w-full min-h-screen bg-off-white">
@@ -38,6 +46,15 @@ export function Gallery() {
               >
                 {/* Media */}
                 <div className="relative w-full overflow-hidden bg-gray-100">
+                  {isAuthenticated && (
+                    <button 
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDelete(item.id, item.imageUrl); }}
+                      className="absolute top-3 right-3 z-30 p-2 bg-red-600 text-white rounded-full hover:bg-red-700 shadow-md transition-transform hover:scale-110"
+                      title="Delete gallery item (Admin)"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
                   {item.imageUrl ? (
                     <img 
                       src={item.imageUrl} 
