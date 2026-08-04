@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useAppStore, PostCategory } from "../../store/useStore";
-import { Trash2, AlertCircle, CheckCircle2, Image as ImageIcon, Video, Plus, KeyRound } from "lucide-react";
+import { useAppStore, PostCategory, Post } from "../../store/useStore";
+import { Trash2, AlertCircle, CheckCircle2, Image as ImageIcon, Video, Plus, KeyRound, Pencil, X } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "../../lib/utils";
 
 export function AdminDashboard() {
-  const { posts, gallery, addPost, deletePost, addGalleryItem, deleteGalleryItem, updatePassword, fetchPosts, fetchGallery } = useAppStore();
+  const { posts, gallery, addPost, updatePost, deletePost, addGalleryItem, deleteGalleryItem, updatePassword, fetchPosts, fetchGallery } = useAppStore();
 
   useEffect(() => {
     fetchPosts();
@@ -29,6 +29,43 @@ export function AdminDashboard() {
   const [postCat, setPostCat] = useState<PostCategory>("news");
   const [postImg, setPostImg] = useState("");
   const [postVid, setPostVid] = useState("");
+
+  // Edit Post Modal State
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDesc, setEditDesc] = useState("");
+  const [editCat, setEditCat] = useState<PostCategory>("news");
+  const [editImg, setEditImg] = useState("");
+  const [editVid, setEditVid] = useState("");
+
+  const handleStartEdit = (post: Post) => {
+    setEditingPost(post);
+    setEditTitle(post.title);
+    setEditDesc(post.description);
+    setEditCat(post.category);
+    setEditImg(post.imageUrl || "");
+    setEditVid(post.videoUrl || "");
+  };
+
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingPost) return;
+    if (!editTitle || !editDesc) return showNotif('error', 'Title and Description are required.');
+
+    try {
+      await updatePost(editingPost.id, {
+        title: editTitle,
+        description: editDesc,
+        category: editCat,
+        imageUrl: editImg || undefined,
+        videoUrl: editVid || undefined,
+      });
+      setEditingPost(null);
+      showNotif('success', 'Update edited successfully');
+    } catch (err) {
+      showNotif('error', 'Failed to update post.');
+    }
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, setter: React.Dispatch<React.SetStateAction<string>>) => {
     const file = e.target.files?.[0];
@@ -216,9 +253,14 @@ export function AdminDashboard() {
                     <h3 className="font-bold text-navy truncate">{post.title}</h3>
                     <p className="text-sm text-gray-500 line-clamp-2 mt-1">{post.description}</p>
                   </div>
-                  <button onClick={() => handleDeletePost(post.id, post.imageUrl)} className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shrink-0" title="Delete Post">
-                    <Trash2 className="w-5 h-5"/>
-                  </button>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <button onClick={() => handleStartEdit(post)} className="p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors" title="Edit Post">
+                      <Pencil className="w-5 h-5"/>
+                    </button>
+                    <button onClick={() => handleDeletePost(post.id, post.imageUrl)} className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete Post">
+                      <Trash2 className="w-5 h-5"/>
+                    </button>
+                  </div>
                 </div>
               ))}
               {posts.length === 0 && <p className="text-gray-500 py-8 text-center italic">No updates published.</p>}
@@ -308,6 +350,104 @@ export function AdminDashboard() {
         )}
 
       </div>
+
+      {/* EDIT POST MODAL */}
+      {editingPost && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto">
+            <button 
+              onClick={() => setEditingPost(null)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1 rounded-lg"
+            >
+              <X className="w-6 h-6"/>
+            </button>
+            <h2 className="text-xl font-bold text-navy mb-4 flex items-center gap-2">
+              <Pencil className="w-5 h-5 text-blue-600"/> Edit Update
+            </h2>
+            <form onSubmit={handleSaveEdit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                <select 
+                  value={editCat} 
+                  onChange={(e) => setEditCat(e.target.value as any)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-transparent outline-none bg-white"
+                >
+                  <option value="news">News</option>
+                  <option value="event">Event</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <input 
+                  required 
+                  value={editTitle} 
+                  onChange={e => setEditTitle(e.target.value)} 
+                  type="text" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-navy" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea 
+                  required 
+                  value={editDesc} 
+                  onChange={e => setEditDesc(e.target.value)} 
+                  rows={4} 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none outline-none focus:ring-2 focus:ring-navy" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                  <ImageIcon className="w-4 h-4"/> Image URL or Upload New
+                </label>
+                <input 
+                  value={editImg} 
+                  onChange={e => setEditImg(e.target.value)} 
+                  type="text" 
+                  placeholder="Paste Image URL"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm mb-2" 
+                />
+                <input 
+                  accept="image/*" 
+                  onChange={e => handleImageUpload(e, setEditImg)} 
+                  type="file" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" 
+                />
+                {editImg && (
+                  <img src={editImg} alt="Preview" className="mt-2 h-24 w-auto rounded object-cover border border-gray-200" />
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                  <Video className="w-4 h-4"/> Video URL (Optional)
+                </label>
+                <input 
+                  value={editVid} 
+                  onChange={e => setEditVid(e.target.value)} 
+                  type="url" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg" 
+                  placeholder="YouTube or Google Drive link" 
+                />
+              </div>
+              <div className="flex justify-end gap-3 pt-2">
+                <button 
+                  type="button" 
+                  onClick={() => setEditingPost(null)}
+                  className="px-4 py-2 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="px-5 py-2 bg-navy text-white font-bold rounded-lg hover:bg-navy-dark transition-colors"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

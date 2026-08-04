@@ -1,8 +1,69 @@
+import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { ArrowRight, BookOpen, Users, Trophy } from "lucide-react";
+import { ArrowRight, BookOpen, Users, Trophy, Calendar, Newspaper, ExternalLink, Trash2, Pencil, X, Image as ImageIcon, Video } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAppStore, Post, PostCategory } from "../store/useStore";
+import { format } from "date-fns";
+import { cn } from "../lib/utils";
 
 export function Home() {
+  const posts = useAppStore(state => state.posts);
+  const fetchPosts = useAppStore(state => state.fetchPosts);
+  const deletePost = useAppStore(state => state.deletePost);
+  const updatePost = useAppStore(state => state.updatePost);
+  const isAuthenticated = useAppStore(state => state.isAuthenticated);
+
+  // Edit Modal State for Home page admin actions
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDesc, setEditDesc] = useState("");
+  const [editCat, setEditCat] = useState<PostCategory>("news");
+  const [editImg, setEditImg] = useState("");
+  const [editVid, setEditVid] = useState("");
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
+  const handleDelete = async (id: string, imageUrl?: string) => {
+    if (window.confirm("Are you sure you want to delete this update?")) {
+      await deletePost(id, imageUrl);
+    }
+  };
+
+  const handleStartEdit = (post: Post) => {
+    setEditingPost(post);
+    setEditTitle(post.title);
+    setEditDesc(post.description);
+    setEditCat(post.category);
+    setEditImg(post.imageUrl || "");
+    setEditVid(post.videoUrl || "");
+  };
+
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingPost) return;
+    await updatePost(editingPost.id, {
+      title: editTitle,
+      description: editDesc,
+      category: editCat,
+      imageUrl: editImg || undefined,
+      videoUrl: editVid || undefined
+    });
+    setEditingPost(null);
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setEditImg(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const recentPosts = posts.slice(0, 6);
   return (
     <div className="w-full">
       {/* Hero Section */}
@@ -177,6 +238,195 @@ export function Home() {
           </div>
         </div>
       </section>
+
+      {/* Latest News & Events Section */}
+      <section className="py-20 bg-white border-t border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <div>
+              <span className="text-accent-red font-bold uppercase tracking-wider text-sm">Graduation 2026</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-navy mt-1">Highlights from the 2026 Graduation Ceremony</h2>
+              <div className="w-20 h-1 bg-accent-red mt-3" />
+            </div>
+            <Link 
+              to="/news" 
+              className="inline-flex items-center gap-2 px-6 py-3 bg-navy text-white rounded-xl font-semibold hover:bg-navy-dark transition-colors self-start md:self-auto"
+            >
+              View All Updates <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {recentPosts.map((post) => (
+              <article 
+                key={post.id} 
+                className="bg-off-white rounded-2xl shadow-sm border border-gray-200/80 overflow-hidden flex flex-col hover:shadow-lg transition-shadow"
+              >
+                <div className="relative h-48 bg-gray-100 shrink-0">
+                  {post.imageUrl && (
+                    <img 
+                      src={post.imageUrl} 
+                      alt={post.title} 
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  )}
+                  <div className="absolute top-4 left-4 flex items-center justify-between right-4">
+                    <span className={cn(
+                      "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm",
+                      post.category === 'news' ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"
+                    )}>
+                      {post.category === 'news' ? <Newspaper className="w-3 h-3" /> : <Calendar className="w-3 h-3" />}
+                      {post.category}
+                    </span>
+                    {isAuthenticated && (
+                      <div className="flex items-center gap-1.5">
+                        <button 
+                          onClick={(e) => { e.preventDefault(); handleStartEdit(post); }}
+                          className="p-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md transition-colors"
+                          title="Edit post (Admin)"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                        <button 
+                          onClick={(e) => { e.preventDefault(); handleDelete(post.id, post.imageUrl); }}
+                          className="p-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors"
+                          title="Delete post (Admin)"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="p-6 flex-grow flex flex-col">
+                  <span className="text-xs font-medium text-gray-400 mb-2">
+                    {format(new Date(post.createdAt), 'MMMM d, yyyy')}
+                  </span>
+                  <h3 className="text-lg font-bold text-navy mb-2 line-clamp-2">
+                    {post.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4 line-clamp-3 text-sm leading-relaxed">
+                    {post.description}
+                  </p>
+                  
+                  {post.videoUrl && (
+                    <div className="mt-auto pt-3 border-t border-gray-200">
+                      <a 
+                        href={post.videoUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-accent-red hover:text-rose-700 font-medium text-sm flex items-center gap-1"
+                      >
+                        Watch Video <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* EDIT POST MODAL */}
+      {editingPost && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto">
+            <button 
+              onClick={() => setEditingPost(null)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1 rounded-lg"
+            >
+              <X className="w-6 h-6"/>
+            </button>
+            <h2 className="text-xl font-bold text-navy mb-4 flex items-center gap-2">
+              <Pencil className="w-5 h-5 text-blue-600"/> Edit Update
+            </h2>
+            <form onSubmit={handleSaveEdit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                <select 
+                  value={editCat} 
+                  onChange={(e) => setEditCat(e.target.value as any)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-transparent outline-none bg-white"
+                >
+                  <option value="news">News</option>
+                  <option value="event">Event</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <input 
+                  required 
+                  value={editTitle} 
+                  onChange={e => setEditTitle(e.target.value)} 
+                  type="text" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-navy" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea 
+                  required 
+                  value={editDesc} 
+                  onChange={e => setEditDesc(e.target.value)} 
+                  rows={4} 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none outline-none focus:ring-2 focus:ring-navy" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                  <ImageIcon className="w-4 h-4"/> Image URL or Upload New
+                </label>
+                <input 
+                  value={editImg} 
+                  onChange={e => setEditImg(e.target.value)} 
+                  type="text" 
+                  placeholder="Paste Image URL"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm mb-2" 
+                />
+                <input 
+                  accept="image/*" 
+                  onChange={handleImageUpload} 
+                  type="file" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" 
+                />
+                {editImg && (
+                  <img src={editImg} alt="Preview" className="mt-2 h-24 w-auto rounded object-cover border border-gray-200" />
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                  <Video className="w-4 h-4"/> Video URL (Optional)
+                </label>
+                <input 
+                  value={editVid} 
+                  onChange={e => setEditVid(e.target.value)} 
+                  type="url" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg" 
+                  placeholder="YouTube or Google Drive link" 
+                />
+              </div>
+              <div className="flex justify-end gap-3 pt-2">
+                <button 
+                  type="button" 
+                  onClick={() => setEditingPost(null)}
+                  className="px-4 py-2 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="px-5 py-2 bg-navy text-white font-bold rounded-lg hover:bg-navy-dark transition-colors"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Quick Info */}
       <section className="py-20 bg-white">
