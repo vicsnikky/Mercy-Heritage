@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { ArrowRight, BookOpen, Users, Trophy, Calendar, Newspaper, ExternalLink, Trash2, Pencil, X, Image as ImageIcon, Video } from "lucide-react";
+import { ArrowRight, BookOpen, Users, Trophy, Calendar, Newspaper, ExternalLink, Trash2, Pencil, X, Image as ImageIcon, Video, Play, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAppStore, Post, PostCategory } from "../store/useStore";
 import { format } from "date-fns";
 import { cn } from "../lib/utils";
+import { graduationVideos } from "../lib/videoUtils";
+import { VideoPlayerModal } from "../components/VideoPlayerModal";
 
 export function Home() {
   const posts = useAppStore(state => state.posts);
@@ -12,6 +14,9 @@ export function Home() {
   const deletePost = useAppStore(state => state.deletePost);
   const updatePost = useAppStore(state => state.updatePost);
   const isAuthenticated = useAppStore(state => state.isAuthenticated);
+
+  // Video modal preview state
+  const [selectedVideo, setSelectedVideo] = useState<{ url: string; title: string } | null>(null);
 
   // Edit Modal State for Home page admin actions
   const [editingPost, setEditingPost] = useState<Post | null>(null);
@@ -63,12 +68,12 @@ export function Home() {
     reader.readAsDataURL(file);
   };
 
-  const recentPosts = posts.slice(0, 6);
+  const recentPosts = posts.slice(0, 9);
+
   return (
     <div className="w-full">
       {/* Hero Section */}
       <section className="relative w-full h-[600px] bg-navy overflow-hidden">
-        {/* Placeholder for real hero image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
           style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1577896849786-738ed6c78bd3?q=80&w=2070&auto=format&fit=crop")' }}
@@ -95,11 +100,89 @@ export function Home() {
               <Link to="/contact" className="px-8 py-4 bg-accent-red text-white font-semibold rounded-lg hover:bg-rose-700 transition-colors flex items-center justify-center gap-2">
                 Visit Us Today <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link to="/about" className="px-8 py-4 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors backdrop-blur-sm flex items-center justify-center">
-                Learn More
+              <Link to="/news-events" className="px-8 py-4 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors backdrop-blur-sm flex items-center justify-center gap-2">
+                <Play className="w-4 h-4 text-accent-gold fill-current" /> 2026 Graduation Highlights
               </Link>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* 2026 Graduation Video Showcase */}
+      <section className="py-16 bg-gradient-to-b from-navy to-navy-dark text-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+              <div className="flex items-center gap-2 text-accent-gold font-bold uppercase tracking-wider text-xs sm:text-sm">
+                <Sparkles className="w-4 h-4" /> Official 2026 Video Highlights
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mt-1">
+                2026 Graduation Ceremony Videos
+              </h2>
+              <div className="w-20 h-1 bg-accent-gold mt-3" />
+            </div>
+            <p className="text-sm text-gray-300 max-w-md">
+              Watch memorable moments, valedictory speeches, cultural performances, and milestone certificate presentations from the 2026 ceremony.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {graduationVideos.map((vid, idx) => (
+              <motion.div
+                key={vid.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.15 }}
+                className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-accent-gold/50 transition-all group flex flex-col justify-between shadow-xl"
+              >
+                <div className="relative aspect-video bg-black overflow-hidden cursor-pointer" onClick={() => setSelectedVideo({ url: vid.videoUrl, title: vid.title })}>
+                  <img 
+                    src={vid.thumbnailUrl} 
+                    alt={vid.title} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90 group-hover:opacity-100"
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-full bg-accent-red text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <Play className="w-6 h-6 fill-current translate-x-0.5" />
+                    </div>
+                  </div>
+                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-black/70 text-accent-gold backdrop-blur-xs border border-white/10">
+                    {vid.tag}
+                  </span>
+                </div>
+
+                <div className="p-5 flex flex-col flex-grow justify-between">
+                  <div>
+                    <h3 className="font-bold text-lg text-white group-hover:text-accent-gold transition-colors line-clamp-2 mb-2">
+                      {vid.title}
+                    </h3>
+                    <p className="text-xs text-gray-300 line-clamp-3 leading-relaxed mb-4">
+                      {vid.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedVideo({ url: vid.videoUrl, title: vid.title })}
+                      className="text-xs font-bold text-accent-gold hover:text-yellow-300 flex items-center gap-1.5 transition-colors"
+                    >
+                      <Play className="w-3.5 h-3.5 fill-current" /> Watch Video
+                    </button>
+                    <a
+                      href={vid.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-gray-400 hover:text-white flex items-center gap-1 transition-colors"
+                    >
+                      YouTube <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -150,10 +233,10 @@ export function Home() {
         </div>
       </section>
 
-      {/* New Image Section */}
+      {/* Shaping Extraordinary Minds Section */}
       <section className="py-20 bg-navy relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div className="flex flex-col lg:flex-row-reverse items-center gap-12">
+          <div className="flex flex-col lg:flex-row-reverse items-center gap-12">
             <div className="lg:w-1/2">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -180,14 +263,14 @@ export function Home() {
                   At Mercy Heritage, we believe that education is the most powerful tool to change the world. Our dedicated approach focuses on identifying and nurturing the unique potential within every child, fostering a culture of innovation, critical thinking, and moral integrity.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                   <div className="bg-white/5 p-4 rounded-xl border border-white/10 flex-1 min-w-[200px]">
-                      <h4 className="font-bold text-accent-red mb-1">Our Vision</h4>
-                      <p className="text-sm text-gray-400">To be a leading educational institution that produces global citizens equipped with expertise and character.</p>
-                   </div>
-                   <div className="bg-white/5 p-4 rounded-xl border border-white/10 flex-1 min-w-[200px]">
-                      <h4 className="font-bold text-accent-red mb-1">Our Mission</h4>
-                      <p className="text-sm text-gray-400">To provide high-quality, inclusive, and equitable education that fosters total transformation.</p>
-                   </div>
+                  <div className="bg-white/5 p-4 rounded-xl border border-white/10 flex-1 min-w-[200px]">
+                    <h4 className="font-bold text-accent-red mb-1">Our Vision</h4>
+                    <p className="text-sm text-gray-400">To be a leading educational institution that produces global citizens equipped with expertise and character.</p>
+                  </div>
+                  <div className="bg-white/5 p-4 rounded-xl border border-white/10 flex-1 min-w-[200px]">
+                    <h4 className="font-bold text-accent-red mb-1">Our Mission</h4>
+                    <p className="text-sm text-gray-400">To provide high-quality, inclusive, and equitable education that fosters total transformation.</p>
+                  </div>
                 </div>
               </motion.div>
             </div>
@@ -244,15 +327,15 @@ export function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <div>
-              <span className="text-accent-red font-bold uppercase tracking-wider text-sm">Graduation 2026</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-navy mt-1">Highlights from the 2026 Graduation Ceremony</h2>
+              <span className="text-accent-red font-bold uppercase tracking-wider text-sm">Official Gallery & Updates</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-navy mt-1">2026 Graduation Pictures & Highlights</h2>
               <div className="w-20 h-1 bg-accent-red mt-3" />
             </div>
             <Link 
-              to="/news" 
-              className="inline-flex items-center gap-2 px-6 py-3 bg-navy text-white rounded-xl font-semibold hover:bg-navy-dark transition-colors self-start md:self-auto"
+              to="/gallery" 
+              className="inline-flex items-center gap-2 px-6 py-3 bg-navy text-white rounded-xl font-semibold hover:bg-navy-dark transition-colors self-start md:self-auto shadow-md"
             >
-              View All Updates <ArrowRight className="w-4 h-4" />
+              View All 2026 Graduation Pictures <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
@@ -260,21 +343,38 @@ export function Home() {
             {recentPosts.map((post) => (
               <article 
                 key={post.id} 
-                className="bg-off-white rounded-2xl shadow-sm border border-gray-200/80 overflow-hidden flex flex-col hover:shadow-lg transition-shadow"
+                className="bg-off-white rounded-2xl shadow-sm border border-gray-200/80 overflow-hidden flex flex-col hover:shadow-lg transition-all group"
               >
-                <div className="relative h-48 bg-gray-100 shrink-0">
-                  {post.imageUrl && (
+                <div className="relative h-52 bg-gray-900 shrink-0 overflow-hidden">
+                  {post.imageUrl ? (
                     <img 
                       src={post.imageUrl} 
                       alt={post.title} 
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       referrerPolicy="no-referrer"
                     />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-navy/20">
+                      <ImageIcon className="w-12 h-12 text-navy/40" />
+                    </div>
                   )}
+
+                  {/* Play video overlay if post has a video */}
+                  {post.videoUrl && (
+                    <div 
+                      onClick={() => setSelectedVideo({ url: post.videoUrl!, title: post.title })}
+                      className="absolute inset-0 bg-black/30 hover:bg-black/50 transition-colors flex items-center justify-center cursor-pointer"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-accent-red text-white flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                        <Play className="w-5 h-5 fill-current translate-x-0.5" />
+                      </div>
+                    </div>
+                  )}
+
                   <div className="absolute top-4 left-4 flex items-center justify-between right-4">
                     <span className={cn(
-                      "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm",
-                      post.category === 'news' ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"
+                      "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1 shadow-md backdrop-blur-xs",
+                      post.category === 'news' ? "bg-blue-600 text-white" : "bg-emerald-600 text-white"
                     )}>
                       {post.category === 'news' ? <Newspaper className="w-3 h-3" /> : <Calendar className="w-3 h-3" />}
                       {post.category}
@@ -282,14 +382,14 @@ export function Home() {
                     {isAuthenticated && (
                       <div className="flex items-center gap-1.5">
                         <button 
-                          onClick={(e) => { e.preventDefault(); handleStartEdit(post); }}
+                          onClick={(e) => { e.stopPropagation(); handleStartEdit(post); }}
                           className="p-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md transition-colors"
                           title="Edit post (Admin)"
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button 
-                          onClick={(e) => { e.preventDefault(); handleDelete(post.id, post.imageUrl); }}
+                          onClick={(e) => { e.stopPropagation(); handleDelete(post.id, post.imageUrl); }}
                           className="p-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors"
                           title="Delete post (Admin)"
                         >
@@ -300,26 +400,35 @@ export function Home() {
                   </div>
                 </div>
 
-                <div className="p-6 flex-grow flex flex-col">
-                  <span className="text-xs font-medium text-gray-400 mb-2">
-                    {format(new Date(post.createdAt), 'MMMM d, yyyy')}
-                  </span>
-                  <h3 className="text-lg font-bold text-navy mb-2 line-clamp-2">
-                    {post.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4 line-clamp-3 text-sm leading-relaxed">
-                    {post.description}
-                  </p>
+                <div className="p-6 flex-grow flex flex-col justify-between">
+                  <div>
+                    <span className="text-xs font-medium text-gray-400 mb-2 block">
+                      {format(new Date(post.createdAt), 'MMMM d, yyyy')}
+                    </span>
+                    <h3 className="text-lg font-bold text-navy mb-2 line-clamp-2 group-hover:text-accent-red transition-colors">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4 line-clamp-3 text-sm leading-relaxed">
+                      {post.description}
+                    </p>
+                  </div>
                   
                   {post.videoUrl && (
-                    <div className="mt-auto pt-3 border-t border-gray-200">
+                    <div className="pt-3 border-t border-gray-200 flex items-center justify-between">
+                      <button 
+                        type="button"
+                        onClick={() => setSelectedVideo({ url: post.videoUrl!, title: post.title })}
+                        className="text-accent-red hover:text-rose-700 font-bold text-xs flex items-center gap-1.5 transition-colors"
+                      >
+                        <Play className="w-3.5 h-3.5 fill-current" /> Watch Video
+                      </button>
                       <a 
                         href={post.videoUrl} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-accent-red hover:text-rose-700 font-medium text-sm flex items-center gap-1"
+                        className="text-gray-400 hover:text-gray-700 text-xs flex items-center gap-1"
                       >
-                        Watch Video <ExternalLink className="w-4 h-4" />
+                        YouTube <ExternalLink className="w-3 h-3" />
                       </a>
                     </div>
                   )}
@@ -428,9 +537,19 @@ export function Home() {
         </div>
       )}
 
+      {/* Video Player Modal */}
+      {selectedVideo && (
+        <VideoPlayerModal
+          isOpen={true}
+          videoUrl={selectedVideo.url}
+          title={selectedVideo.title}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+
       {/* Quick Info */}
       <section className="py-20 bg-white">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2">
               <img 
@@ -465,7 +584,7 @@ export function Home() {
               </Link>
             </div>
           </div>
-         </div>
+        </div>
       </section>
     </div>
   );

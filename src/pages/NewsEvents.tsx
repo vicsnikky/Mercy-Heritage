@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppStore, Post, PostCategory } from "../store/useStore";
 import { format } from "date-fns";
-import { Calendar, Newspaper, ExternalLink, Trash2, Pencil, X, Image as ImageIcon, Video } from "lucide-react";
+import { Calendar, Newspaper, ExternalLink, Trash2, Pencil, X, Image as ImageIcon, Video, Play, Sparkles } from "lucide-react";
 import { cn } from "../lib/utils";
+import { VideoPlayerModal } from "../components/VideoPlayerModal";
+import { graduationVideos } from "../lib/videoUtils";
 
 export function NewsEvents() {
   const posts = useAppStore(state => state.posts);
@@ -11,6 +13,9 @@ export function NewsEvents() {
   const updatePost = useAppStore(state => state.updatePost);
   const isAuthenticated = useAppStore(state => state.isAuthenticated);
   const [filter, setFilter] = useState<'all' | 'news' | 'event'>('all');
+
+  // Video player modal state
+  const [selectedVideo, setSelectedVideo] = useState<{ url: string; title: string } | null>(null);
 
   // Edit modal state
   const [editingPost, setEditingPost] = useState<Post | null>(null);
@@ -69,10 +74,53 @@ export function NewsEvents() {
       {/* Header */}
       <section className="bg-navy py-16 px-4 sm:px-6 lg:px-8 text-center text-white">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Highlights from the 2026 Graduation Ceremony</h1>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-gold/20 text-accent-gold border border-accent-gold/40 text-xs font-bold uppercase tracking-wider mb-4">
+            <Sparkles className="w-3.5 h-3.5" /> Official 2026 Graduation Media & News
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">2026 Graduation Pictures & News Updates</h1>
           <p className="text-lg text-gray-300">
-            Celebrate the achievements, performances, and memorable moments of our graduating class.
+            Celebrate the achievements, photographs, valedictory speeches, awards, and memorable presentations of our graduating class.
           </p>
+        </div>
+      </section>
+
+      {/* Featured Video Showcase Banner */}
+      <section className="bg-navy-dark border-b border-white/10 py-10 px-4 sm:px-6 lg:px-8 text-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <Play className="w-5 h-5 text-accent-gold fill-current" /> Official 2026 Graduation Ceremony Video Clips
+              </h2>
+              <p className="text-xs text-gray-400 mt-0.5">Click any clip to watch instantly in high definition</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {graduationVideos.map((vid) => (
+              <div 
+                key={vid.id}
+                onClick={() => setSelectedVideo({ url: vid.videoUrl, title: vid.title })}
+                className="bg-white/5 border border-white/10 hover:border-accent-gold/50 rounded-xl overflow-hidden cursor-pointer transition-all hover:shadow-xl group"
+              >
+                <div className="relative aspect-video bg-black overflow-hidden">
+                  <img src={vid.thumbnailUrl} alt={vid.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform opacity-90 group-hover:opacity-100" />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-accent-red text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <Play className="w-5 h-5 fill-current translate-x-0.5" />
+                    </div>
+                  </div>
+                  <span className="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold bg-black/80 text-accent-gold rounded">
+                    {vid.tag}
+                  </span>
+                </div>
+                <div className="p-4">
+                  <h3 className="text-sm font-bold text-white group-hover:text-accent-gold line-clamp-1 mb-1">{vid.title}</h3>
+                  <p className="text-xs text-gray-400 line-clamp-2">{vid.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -84,13 +132,13 @@ export function NewsEvents() {
               key={f}
               onClick={() => setFilter(f as any)}
               className={cn(
-                "px-6 py-2 rounded-full font-medium transition-colors capitalize",
+                "px-6 py-2.5 rounded-full font-semibold text-sm transition-all capitalize shadow-xs",
                 filter === f 
-                  ? "bg-accent-red text-white" 
+                  ? "bg-accent-red text-white shadow-md" 
                   : "bg-white text-navy-dark border border-gray-200 hover:bg-gray-50"
               )}
             >
-              {f === 'all' ? 'All Updates' : f}
+              {f === 'all' ? 'All Updates & Highlights' : f === 'news' ? 'News & Announcements' : 'Events & Graduation'}
             </button>
           ))}
         </div>
@@ -105,21 +153,38 @@ export function NewsEvents() {
             {filteredPosts.map((post) => (
               <article 
                 key={post.id} 
-                className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-lg transition-shadow"
+                className="bg-white rounded-2xl shadow-sm border border-gray-200/80 overflow-hidden flex flex-col hover:shadow-lg transition-all group"
               >
-                <div className="relative h-48 bg-gray-100 shrink-0">
-                  {post.imageUrl && (
+                <div className="relative h-52 bg-gray-900 shrink-0 overflow-hidden">
+                  {post.imageUrl ? (
                     <img 
                       src={post.imageUrl} 
                       alt={post.title} 
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       referrerPolicy="no-referrer"
                     />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-navy/20">
+                      <ImageIcon className="w-12 h-12 text-navy/40" />
+                    </div>
                   )}
+
+                  {/* Play video overlay if post has a video */}
+                  {post.videoUrl && (
+                    <div 
+                      onClick={() => setSelectedVideo({ url: post.videoUrl!, title: post.title })}
+                      className="absolute inset-0 bg-black/30 hover:bg-black/50 transition-colors flex items-center justify-center cursor-pointer"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-accent-red text-white flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                        <Play className="w-5 h-5 fill-current translate-x-0.5" />
+                      </div>
+                    </div>
+                  )}
+
                   <div className="absolute top-4 left-4 flex items-center justify-between right-4">
                     <span className={cn(
-                      "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm",
-                      post.category === 'news' ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"
+                      "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1 shadow-md backdrop-blur-xs",
+                      post.category === 'news' ? "bg-blue-600 text-white" : "bg-emerald-600 text-white"
                     )}>
                       {post.category === 'news' ? <Newspaper className="w-3 h-3" /> : <Calendar className="w-3 h-3" />}
                       {post.category}
@@ -127,14 +192,14 @@ export function NewsEvents() {
                     {isAuthenticated && (
                       <div className="flex items-center gap-1.5">
                         <button 
-                          onClick={(e) => { e.preventDefault(); handleStartEdit(post); }}
+                          onClick={(e) => { e.stopPropagation(); handleStartEdit(post); }}
                           className="p-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md transition-colors"
                           title="Edit post (Admin)"
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button 
-                          onClick={(e) => { e.preventDefault(); handleDelete(post.id, post.imageUrl); }}
+                          onClick={(e) => { e.stopPropagation(); handleDelete(post.id, post.imageUrl); }}
                           className="p-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors"
                           title="Delete post (Admin)"
                         >
@@ -145,26 +210,35 @@ export function NewsEvents() {
                   </div>
                 </div>
 
-                <div className="p-6 flex-grow flex flex-col">
-                  <span className="text-sm text-gray-400 mb-2">
-                    {format(new Date(post.createdAt), 'MMMM d, yyyy')}
-                  </span>
-                  <h3 className="text-xl font-bold text-navy mb-3 line-clamp-2">
-                    {post.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4 line-clamp-3 text-sm">
-                    {post.description}
-                  </p>
+                <div className="p-6 flex-grow flex flex-col justify-between">
+                  <div>
+                    <span className="text-xs font-medium text-gray-400 mb-2 block">
+                      {format(new Date(post.createdAt), 'MMMM d, yyyy')}
+                    </span>
+                    <h3 className="text-lg font-bold text-navy mb-2 line-clamp-2 group-hover:text-accent-red transition-colors">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4 line-clamp-3 text-sm leading-relaxed">
+                      {post.description}
+                    </p>
+                  </div>
                   
                   {post.videoUrl && (
-                    <div className="mt-auto pt-4 border-t border-gray-100">
+                    <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
+                      <button 
+                        type="button"
+                        onClick={() => setSelectedVideo({ url: post.videoUrl!, title: post.title })}
+                        className="text-accent-red hover:text-rose-700 font-bold text-xs flex items-center gap-1.5 transition-colors"
+                      >
+                        <Play className="w-3.5 h-3.5 fill-current" /> Watch Video
+                      </button>
                       <a 
                         href={post.videoUrl} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-accent-red hover:text-rose-700 font-medium text-sm flex items-center gap-1"
+                        className="text-gray-400 hover:text-gray-700 text-xs flex items-center gap-1"
                       >
-                        Watch Video <ExternalLink className="w-4 h-4" />
+                        YouTube <ExternalLink className="w-3 h-3" />
                       </a>
                     </div>
                   )}
@@ -177,8 +251,8 @@ export function NewsEvents() {
 
       {/* EDIT POST MODAL */}
       {editingPost && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto">
             <button 
               onClick={() => setEditingPost(null)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1 rounded-lg"
@@ -194,7 +268,7 @@ export function NewsEvents() {
                 <select 
                   value={editCat} 
                   onChange={(e) => setEditCat(e.target.value as any)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-transparent outline-none bg-white"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy outline-none bg-white"
                 >
                   <option value="news">News</option>
                   <option value="event">Event</option>
@@ -243,14 +317,14 @@ export function NewsEvents() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
-                  <Video className="w-4 h-4"/> Video URL (Optional)
+                  <Video className="w-4 h-4 text-red-600"/> Video URL (Optional)
                 </label>
                 <input 
                   value={editVid} 
                   onChange={e => setEditVid(e.target.value)} 
                   type="url" 
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg" 
-                  placeholder="YouTube or Google Drive link" 
+                  placeholder="YouTube link" 
                 />
               </div>
               <div className="flex justify-end gap-3 pt-2">
@@ -271,6 +345,16 @@ export function NewsEvents() {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Video Player Modal */}
+      {selectedVideo && (
+        <VideoPlayerModal
+          isOpen={true}
+          videoUrl={selectedVideo.url}
+          title={selectedVideo.title}
+          onClose={() => setSelectedVideo(null)}
+        />
       )}
     </div>
   );

@@ -1,6 +1,8 @@
 {
   "name": "Mercy Heritage School",
-  "description": "Multi-page school website for Mercy Heritage Nursery and Primary School with an admin dashboard.",
+  "description": "Multi-page school website for Mercy Heritage Nursery and Primary School with 2026 graduation pictures, video highlights, news, and admin portal.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

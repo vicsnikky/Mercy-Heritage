@@ -16,11 +16,39 @@ export interface Post {
 
 export const defaultPosts: Post[] = [
   {
+    id: "post-vid-1",
+    title: "2026 Graduation Ceremony: Grand Video Highlights & Processional",
+    description: "Watch the full video highlights of Mercy Heritage Nursery and Primary School's landmark 2026 Graduation Ceremony, showcasing the grand processional, speeches, and joy.",
+    category: "event",
+    imageUrl: "https://img.youtube.com/vi/-XAR0F1ae24/hqdefault.jpg",
+    videoUrl: "https://youtu.be/-XAR0F1ae24?si=NwRIWIElPTe1w2p0",
+    createdAt: Date.now() - 86400000 * 0.5,
+  },
+  {
+    id: "post-vid-2",
+    title: "2026 Graduation Ceremony: Student Presentations & Cultural Dances (Clip 2)",
+    description: "Inspiring student addresses, emotional farewell remarks, choir presentations, and vibrant graduation cultural dances during the 2026 celebration.",
+    category: "event",
+    imageUrl: "https://img.youtube.com/vi/1bElOWvJURM/hqdefault.jpg",
+    videoUrl: "https://youtu.be/1bElOWvJURM?si=tUsSzlBHfIKPExHs",
+    createdAt: Date.now() - 86400000 * 0.8,
+  },
+  {
+    id: "post-vid-3",
+    title: "2026 Graduation Ceremony: Awards Recognition & Certificate Conferment (Clip 3)",
+    description: "Honoring top-performing pupils, testimonial presentations, prize giving, and joyful family celebrations at the 2026 Mercy Heritage Graduation Ceremony.",
+    category: "event",
+    imageUrl: "https://img.youtube.com/vi/T-XvECAxa4g/hqdefault.jpg",
+    videoUrl: "https://youtu.be/T-XvECAxa4g?si=2mYPSp0tGvcwYFsL",
+    createdAt: Date.now() - 86400000 * 0.9,
+  },
+  {
     id: "post-1",
     title: "2026 Graduation Ceremony: Grand Opening & Processional",
     description: "Mercy Heritage Nursery and Primary School celebrated our landmark 2026 Graduation Ceremony with joy, elegance, and pride as students stepped forward into new academic heights.",
     category: "event",
     imageUrl: "https://i.ibb.co/TDbjhGCK/Whats-App-Image-2026-08-04-at-7-09-47-AM.jpg",
+    videoUrl: "https://youtu.be/-XAR0F1ae24?si=NwRIWIElPTe1w2p0",
     createdAt: Date.now() - 86400000 * 1,
   },
   {
@@ -113,10 +141,11 @@ export const defaultPosts: Post[] = [
   },
   {
     id: "post-13",
-    title: "2026 Graduation: Sports & Athletics Merit Awards",
-    description: "Recognizing outstanding sportsmanship, athletics, and physical education achievements among students during the 2026 Graduation awards session.",
+    title: "2026 Graduation: Academic & Character Merit Awards",
+    description: "Recognizing outstanding student leadership, academic discipline, and moral excellence during the 2026 Graduation awards session.",
     category: "event",
     imageUrl: "https://i.ibb.co/pBzKLMT9/Whats-App-Image-2026-08-04-at-7-09-55-AM.jpg",
+    videoUrl: "https://youtu.be/1bElOWvJURM?si=tUsSzlBHfIKPExHs",
     createdAt: Date.now() - 86400000 * 13,
   },
   {
@@ -160,6 +189,134 @@ export interface GalleryItem {
   videoUrl?: string;
   createdAt: number;
 }
+
+export const defaultGallery: GalleryItem[] = [
+  {
+    id: "gal-vid-1",
+    caption: "2026 Graduation Ceremony: Grand Video Highlights & Processional",
+    imageUrl: "https://img.youtube.com/vi/-XAR0F1ae24/hqdefault.jpg",
+    videoUrl: "https://youtu.be/-XAR0F1ae24?si=NwRIWIElPTe1w2p0",
+    createdAt: Date.now() - 86400000 * 0.5,
+  },
+  {
+    id: "gal-vid-2",
+    caption: "2026 Graduation Ceremony: Student Presentations & Cultural Dances (Clip 2)",
+    imageUrl: "https://img.youtube.com/vi/1bElOWvJURM/hqdefault.jpg",
+    videoUrl: "https://youtu.be/1bElOWvJURM?si=tUsSzlBHfIKPExHs",
+    createdAt: Date.now() - 86400000 * 0.8,
+  },
+  {
+    id: "gal-vid-3",
+    caption: "2026 Graduation Ceremony: Awards Recognition & Certificate Conferment (Clip 3)",
+    imageUrl: "https://img.youtube.com/vi/T-XvECAxa4g/hqdefault.jpg",
+    videoUrl: "https://youtu.be/T-XvECAxa4g?si=2mYPSp0tGvcwYFsL",
+    createdAt: Date.now() - 86400000 * 0.9,
+  },
+  {
+    id: "gal-1",
+    caption: "2026 Graduation Ceremony: Cultural Attire & Grand Processional",
+    imageUrl: "https://i.ibb.co/TDbjhGCK/Whats-App-Image-2026-08-04-at-7-09-47-AM.jpg",
+    videoUrl: "https://youtu.be/-XAR0F1ae24?si=NwRIWIElPTe1w2p0",
+    createdAt: Date.now() - 86400000 * 1,
+  },
+  {
+    id: "gal-2",
+    caption: "2026 Graduation: Academic Brilliance & Top Scholar Awards",
+    imageUrl: "https://i.ibb.co/Gfqz7PJS/Whats-App-Image-2026-08-04-at-7-09-48-AM-1.jpg",
+    createdAt: Date.now() - 86400000 * 2,
+  },
+  {
+    id: "gal-3",
+    caption: "2026 Graduation: Traditional Cultural Dance Showcase",
+    imageUrl: "https://i.ibb.co/JWNQxGLx/Whats-App-Image-2026-08-04-at-7-09-48-AM-2.jpg",
+    createdAt: Date.now() - 86400000 * 3,
+  },
+  {
+    id: "gal-4",
+    caption: "2026 Graduation: Valedictorian Speech & Student Leaders",
+    imageUrl: "https://i.ibb.co/v46n7zFP/Whats-App-Image-2026-08-04-at-7-09-48-AM.jpg",
+    createdAt: Date.now() - 86400000 * 4,
+  },
+  {
+    id: "gal-5",
+    caption: "2026 Graduation: Nursery & Kindergarten Stepping Up",
+    imageUrl: "https://i.ibb.co/DHMXmSYc/Whats-App-Image-2026-08-04-at-7-09-49-AM.jpg",
+    createdAt: Date.now() - 86400000 * 5,
+  },
+  {
+    id: "gal-6",
+    caption: "2026 Graduation: Presentation of Testimonials & Diplomas",
+    imageUrl: "https://i.ibb.co/3VxLf5k/Whats-App-Image-2026-08-04-at-7-09-50-AM-1.jpg",
+    createdAt: Date.now() - 86400000 * 6,
+  },
+  {
+    id: "gal-7",
+    caption: "2026 Graduation: School Choir Musical Presentation",
+    imageUrl: "https://i.ibb.co/1tjStLGw/Whats-App-Image-2026-08-04-at-7-09-50-AM-2.jpg",
+    createdAt: Date.now() - 86400000 * 7,
+  },
+  {
+    id: "gal-8",
+    caption: "2026 Graduation: Ceremonial Cutting of the Graduation Cake",
+    imageUrl: "https://i.ibb.co/whNRFTNy/Whats-App-Image-2026-08-04-at-7-09-50-AM.jpg",
+    createdAt: Date.now() - 86400000 * 8,
+  },
+  {
+    id: "gal-9",
+    caption: "2026 Graduation: Dramatic Stage Play on Character & Wisdom",
+    imageUrl: "https://i.ibb.co/ZR0FDSQt/Whats-App-Image-2026-08-04-at-7-09-51-AM-1.jpg",
+    createdAt: Date.now() - 86400000 * 9,
+  },
+  {
+    id: "gal-10",
+    caption: "2026 Graduation: Parents, Guardians & PTA Commendations",
+    imageUrl: "https://i.ibb.co/NdggxT9R/Whats-App-Image-2026-08-04-at-7-09-51-AM.jpg",
+    createdAt: Date.now() - 86400000 * 10,
+  },
+  {
+    id: "gal-11",
+    caption: "2026 Graduation: Academic Gown Portrait Session",
+    imageUrl: "https://i.ibb.co/PGQzt7hX/Whats-App-Image-2026-08-04-at-7-09-54-AM-1.jpg",
+    createdAt: Date.now() - 86400000 * 11,
+  },
+  {
+    id: "gal-12",
+    caption: "2026 Graduation: Teachers' Blessings & Heartwarming Farewells",
+    imageUrl: "https://i.ibb.co/kVGKSM7R/Whats-App-Image-2026-08-04-at-7-09-54-AM-1.jpg",
+    createdAt: Date.now() - 86400000 * 12,
+  },
+  {
+    id: "gal-13",
+    caption: "2026 Graduation: Student Academic & Character Merit Trophies",
+    imageUrl: "https://i.ibb.co/pBzKLMT9/Whats-App-Image-2026-08-04-at-7-09-55-AM.jpg",
+    videoUrl: "https://youtu.be/1bElOWvJURM?si=tUsSzlBHfIKPExHs",
+    createdAt: Date.now() - 86400000 * 13,
+  },
+  {
+    id: "gal-14",
+    caption: "2026 Graduation: Dedicated Thanksgiving & Prophetic Prayers",
+    imageUrl: "https://i.ibb.co/LdJr0pVQ/Whats-App-Image-2026-08-04-at-7-09-56-AM.jpg",
+    createdAt: Date.now() - 86400000 * 14,
+  },
+  {
+    id: "gal-15",
+    caption: "2026 Graduation: Headmistress Address to the Class of 2026",
+    imageUrl: "https://i.ibb.co/6JfLFt5x/Whats-App-Image-2026-08-04-at-7-09-57-AM-1.jpg",
+    createdAt: Date.now() - 86400000 * 15,
+  },
+  {
+    id: "gal-16",
+    caption: "2026 Graduation: STEM & Innovation Project Exhibition",
+    imageUrl: "https://i.ibb.co/vt0xn96/Whats-App-Image-2026-08-04-at-7-09-57-AM.jpg",
+    createdAt: Date.now() - 86400000 * 16,
+  },
+  {
+    id: "gal-17",
+    caption: "2026 Graduation: Festive Family Reception & Celebrations",
+    imageUrl: "https://i.ibb.co/RkcY1Z5f/Whats-App-Image-2026-08-04-at-7-09-58-AM.jpg",
+    createdAt: Date.now() - 86400000 * 17,
+  }
+];
 
 interface AppState {
   adminPasswordHash: string;
@@ -267,9 +424,9 @@ export const useAppStore = create<AppState>()(
             
             const fetchedIds = new Set(fetched.map(p => p.id));
             const currentPosts = get().posts || [];
-            // preserve any current posts that aren't in Supabase yet (e.g. default posts)
+            // Merge with fresh default graduation posts if needed
             const extraPosts = currentPosts.filter(p => !fetchedIds.has(p.id));
-            set({ posts: [...fetched, ...extraPosts] });
+            set({ posts: [...fetched, ...(extraPosts.length > 0 ? extraPosts : defaultPosts)] });
           } else {
             const current = get().posts;
             if (!current || current.length === 0) {
@@ -287,37 +444,73 @@ export const useAppStore = create<AppState>()(
 
       fetchGallery: async () => {
         set({ isLoading: true });
-        const { data, error } = await supabase
-          .from('gallery')
-          .select('*')
-          .order('created_at', { ascending: false });
-          
-        if (!error && data) {
-          set({
-            gallery: data.map(d => ({
+        try {
+          const { data, error } = await supabase
+            .from('gallery')
+            .select('*')
+            .order('created_at', { ascending: false });
+            
+          if (!error && data && data.length > 0) {
+            const fetched = data.map(d => ({
               id: d.id,
               caption: d.caption,
               imageUrl: d.image_url,
               videoUrl: d.video_url,
               createdAt: new Date(d.created_at).getTime()
-            }))
-          });
+            }));
+            const fetchedIds = new Set(fetched.map(g => g.id));
+            const currentGallery = get().gallery || [];
+            const extraGallery = currentGallery.filter(g => !fetchedIds.has(g.id));
+            set({ gallery: [...fetched, ...(extraGallery.length > 0 ? extraGallery : defaultGallery)] });
+          } else {
+            const current = get().gallery;
+            if (!current || current.length === 0) {
+              set({ gallery: defaultGallery });
+            }
+          }
+        } catch (err) {
+          const current = get().gallery;
+          if (!current || current.length === 0) {
+            set({ gallery: defaultGallery });
+          }
         }
         set({ isLoading: false });
       },
       
       addPost: async (postData) => {
-        const uploadedUrl = postData.imageUrl ? await uploadImage(postData.imageUrl) : undefined;
+        // Auto-detect YouTube links in image or video fields
+        let finalVideoUrl = postData.videoUrl?.trim() || undefined;
+        let finalImageUrl = postData.imageUrl?.trim() || undefined;
+
+        if (finalImageUrl && (finalImageUrl.includes('youtu.be') || finalImageUrl.includes('youtube.com'))) {
+          if (!finalVideoUrl) finalVideoUrl = finalImageUrl;
+          const match = finalImageUrl.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/);
+          if (match && match[1]) {
+            finalImageUrl = `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+          }
+        }
+
+        if (finalVideoUrl && !finalImageUrl) {
+          const match = finalVideoUrl.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/);
+          if (match && match[1]) {
+            finalImageUrl = `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+          }
+        }
+
+        const uploadedUrl = finalImageUrl && finalImageUrl.startsWith('data:') ? await uploadImage(finalImageUrl) : undefined;
+        const resolvedImage = uploadedUrl || finalImageUrl;
+
         const newPost: Post = {
           id: `post-${Date.now()}`,
           title: postData.title,
           description: postData.description,
           category: postData.category,
-          imageUrl: uploadedUrl || postData.imageUrl,
-          videoUrl: postData.videoUrl,
+          imageUrl: resolvedImage,
+          videoUrl: finalVideoUrl,
           createdAt: Date.now()
         };
 
+        // Immediately update state and localStorage for instant publishing feedback
         set(state => ({
           posts: [newPost, ...state.posts]
         }));
@@ -328,17 +521,35 @@ export const useAppStore = create<AppState>()(
             title: postData.title,
             description: postData.description,
             category: postData.category,
-            image_url: uploadedUrl,
-            video_url: postData.videoUrl
+            image_url: resolvedImage,
+            video_url: finalVideoUrl
           }]);
-          if (error) console.error('Supabase insert post error:', error);
+          if (error) console.warn('Supabase post insert notification:', error);
         } catch (err) {
-          console.error('Supabase insert post exception:', err);
+          console.warn('Supabase insert post notice:', err);
         }
       },
 
       updatePost: async (id, updatedData) => {
-        let uploadedUrl = updatedData.imageUrl;
+        let finalVideoUrl = updatedData.videoUrl?.trim() || undefined;
+        let finalImageUrl = updatedData.imageUrl?.trim() || undefined;
+
+        if (finalImageUrl && (finalImageUrl.includes('youtu.be') || finalImageUrl.includes('youtube.com'))) {
+          if (!finalVideoUrl) finalVideoUrl = finalImageUrl;
+          const match = finalImageUrl.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/);
+          if (match && match[1]) {
+            finalImageUrl = `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+          }
+        }
+
+        if (finalVideoUrl && !finalImageUrl) {
+          const match = finalVideoUrl.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/);
+          if (match && match[1]) {
+            finalImageUrl = `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+          }
+        }
+
+        let uploadedUrl = finalImageUrl;
         if (uploadedUrl && uploadedUrl.startsWith('data:')) {
           uploadedUrl = (await uploadImage(uploadedUrl)) || uploadedUrl;
         }
@@ -347,7 +558,8 @@ export const useAppStore = create<AppState>()(
           posts: state.posts.map(p => p.id === id ? {
             ...p,
             ...updatedData,
-            imageUrl: uploadedUrl ?? updatedData.imageUrl ?? p.imageUrl
+            videoUrl: finalVideoUrl !== undefined ? finalVideoUrl : p.videoUrl,
+            imageUrl: uploadedUrl ?? finalImageUrl ?? p.imageUrl
           } : p)
         }));
 
@@ -356,12 +568,12 @@ export const useAppStore = create<AppState>()(
             title: updatedData.title,
             description: updatedData.description,
             category: updatedData.category,
-            image_url: uploadedUrl,
-            video_url: updatedData.videoUrl
+            image_url: uploadedUrl || finalImageUrl,
+            video_url: finalVideoUrl
           }).eq('id', id);
-          if (error) console.error('Supabase update post error:', error);
+          if (error) console.warn('Supabase update post notice:', error);
         } catch (err) {
-          console.error('Supabase update post exception:', err);
+          console.warn('Supabase update post exception:', err);
         }
       },
       
@@ -373,10 +585,10 @@ export const useAppStore = create<AppState>()(
         try {
           const { error } = await supabase.from('posts').delete().eq('id', id);
           if (error) {
-            console.error('Supabase delete post error:', error);
+            console.warn('Supabase delete post notice:', error);
           }
         } catch (err) {
-          console.error('Supabase delete post exception:', err);
+          console.warn('Supabase delete post notice:', err);
         }
 
         if (imageUrl) {
@@ -385,37 +597,70 @@ export const useAppStore = create<AppState>()(
       },
 
       addGalleryItem: async (itemData) => {
-        const uploadedUrl = itemData.imageUrl ? await uploadImage(itemData.imageUrl) : undefined;
-        
-        const { error } = await supabase.from('gallery').insert([{
+        let finalVideoUrl = itemData.videoUrl?.trim() || undefined;
+        let finalImageUrl = itemData.imageUrl?.trim() || undefined;
+
+        if (finalImageUrl && (finalImageUrl.includes('youtu.be') || finalImageUrl.includes('youtube.com'))) {
+          if (!finalVideoUrl) finalVideoUrl = finalImageUrl;
+          const match = finalImageUrl.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/);
+          if (match && match[1]) {
+            finalImageUrl = `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+          }
+        }
+
+        if (finalVideoUrl && !finalImageUrl) {
+          const match = finalVideoUrl.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/);
+          if (match && match[1]) {
+            finalImageUrl = `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+          }
+        }
+
+        const uploadedUrl = finalImageUrl && finalImageUrl.startsWith('data:') ? await uploadImage(finalImageUrl) : undefined;
+        const resolvedImage = uploadedUrl || finalImageUrl;
+
+        const newItem: GalleryItem = {
+          id: `gal-${Date.now()}`,
           caption: itemData.caption,
-          image_url: uploadedUrl,
-          video_url: itemData.videoUrl
-        }]);
-        
-        if (error) throw error;
-        await get().fetchGallery();
+          imageUrl: resolvedImage,
+          videoUrl: finalVideoUrl,
+          createdAt: Date.now()
+        };
+
+        // Immediately update state and persist
+        set(state => ({
+          gallery: [newItem, ...state.gallery]
+        }));
+
+        try {
+          const { error } = await supabase.from('gallery').insert([{
+            id: newItem.id,
+            caption: itemData.caption,
+            image_url: resolvedImage,
+            video_url: finalVideoUrl
+          }]);
+          if (error) console.warn('Supabase gallery insert notice:', error);
+        } catch (err) {
+          console.warn('Supabase gallery insert exception:', err);
+        }
       },
 
       deleteGalleryItem: async (id, imageUrl) => {
+        set(state => ({
+          gallery: state.gallery.filter(g => g.id !== id)
+        }));
+
         try {
           const { error } = await supabase.from('gallery').delete().eq('id', id);
           if (error) {
-            console.error('Supabase delete gallery error:', error);
+            console.warn('Supabase delete gallery notice:', error);
           }
         } catch (err) {
-          console.error('Supabase delete gallery exception:', err);
+          console.warn('Supabase delete gallery exception:', err);
         }
 
         if (imageUrl) {
           await deleteImage(imageUrl);
         }
-
-        set(state => ({
-          gallery: state.gallery.filter(g => g.id !== id)
-        }));
-
-        await get().fetchGallery();
       }
     }),
     {
